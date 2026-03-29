@@ -17,7 +17,7 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     print(f"[DEBUG] {input_JWT}")
     print("[DEBUG]")
     # DEBUG
-    if "Bearer" not in input_JWT:
+    if not input_JWT.lower().startswith("bearer"):
         return False
 
     input_JWT = input_JWT.split(" ")
