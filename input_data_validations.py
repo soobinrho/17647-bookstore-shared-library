@@ -40,7 +40,7 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
 
     JWT_payload_sub = str(JWT_payload["sub"])
     LIST_VALID_SUBS = ["starlord", "gamora", "drax", "rocket", "groot"]
-    if JWT_payload_sub.lower() not in LIST_VALID_SUBS:
+    if not any(JWT_payload_sub == x for x in LIST_VALID_SUBS):
         return False
 
     JWT_payload_exp = str(JWT_payload["exp"])
