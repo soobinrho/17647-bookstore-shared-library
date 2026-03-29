@@ -10,45 +10,39 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     # signature's purpose is to verify that the header and the payload
     # originate from where it claims to be. The header and payload are
     # still base64 decodable without any key.
-    JWT_payload = jwt.decode(input_JWT, options={'verify_signature': False})
-    return True
+    JWT_payload = jwt.decode(input_JWT, options={"verify_signature": False})
 
     # We don't need the header for this assignment, but adding this
     # for my future reference:
-    JWT_header = jwt.get_unverified_header(input_JWT)
+    _ = jwt.get_unverified_header(input_JWT)
 
-    if 'sub' not in JWT_payload or 'exp' not in JWT_payload or 'iss' not in JWT_payload:
+    if "sub" not in JWT_payload or "exp" not in JWT_payload or "iss" not in JWT_payload:
         return False
 
-    JWT_payload_sub = str(JWT_payload['sub'])
-    LIST_VALID_SUBS = ['starlord', 'gamora', 'drax', 'rocket', 'groot']
-    if str(JWT_payload_sub).lower() not in LIST_VALID_SUBS:
+    JWT_payload_sub = str(JWT_payload["sub"])
+    LIST_VALID_SUBS = ["starlord", "gamora", "drax", "rocket", "groot"]
+    if JWT_payload_sub.lower() not in LIST_VALID_SUBS:
         return False
 
-    JWT_payload_exp = str(JWT_payload['exp'])
+    JWT_payload_exp = str(JWT_payload["exp"])
     if not check_is_valid_unix_epoch(JWT_payload_exp):
         return False
     else:
-        input_time = datetime.datetime.fromtimestamp(input_time)
+        input_time = datetime.datetime.fromtimestamp(JWT_payload_exp)
         now_time = datetime.datetime.now()
         if input_time <= now_time:
             return False
 
-    JWT_payload_iss = str(JWT_payload['iss'])
-    if JWT_payload_iss != 'cmu.edu':
+    JWT_payload_iss = str(JWT_payload["iss"])
+    if JWT_payload_iss != "cmu.edu":
         return False
-
-    #DEBUG
-    print(JWT_payload)
-    print(JWT_header)
-    #DEBUG
 
 
 def check_is_valid_unix_epoch(input_time: str) -> bool:
     try:
         datetime.datetime.fromtimestamp(input_time)
         return True
-    except:
+    except Exception:
         return False
 
 
