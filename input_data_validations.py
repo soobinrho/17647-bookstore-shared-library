@@ -164,7 +164,7 @@ def check_is_valid_state_abbr(state: str) -> bool:
         "WI",
         "WY",
     ]
-    if state not in list_states:
+    if str(state).upper() not in list_states:
         return False
 
     return True
