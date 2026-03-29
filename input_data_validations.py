@@ -3,6 +3,26 @@ import jwt
 import datetime
 
 
+def check_is_valid_authorization_header(input_auth) -> bool:
+    if input_auth is None:
+        return False
+
+    input_auth = str(input_auth)
+    if "Authorization" not in input_auth:
+        return False
+
+    # Good example: `Authorization <SNIP>.<SNIP>.<SNIP>`
+    # Bad example: `Authorization `
+    if len(input_auth.strip().split(" ")) < 2:
+        return False
+
+    str_JWT = input_auth.strip().split(" ")[1]
+    if not check_is_valid_JWT(str_JWT):
+        return False
+
+    return True
+
+
 def check_is_valid_JWT(input_JWT: str) -> bool:
     # Structure of JWT:
     # HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
@@ -10,6 +30,14 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     # signature's purpose is to verify that the header and the payload
     # originate from where it claims to be. The header and payload are
     # still base64 decodable without any key.
+    if input_JWT.count(".") != 3:
+        return False
+
+    list_JWT_three_parts = input_JWT.split(".")
+    for part in list_JWT_three_parts:
+        if len(part) < 1:
+            return False
+
     JWT_payload = jwt.decode(input_JWT, options={"verify_signature": False})
 
     # We don't need the header for this assignment, but adding this
@@ -36,6 +64,8 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     JWT_payload_iss = str(JWT_payload["iss"])
     if JWT_payload_iss != "cmu.edu":
         return False
+
+    return True
 
 
 def check_is_valid_unix_epoch(input_time: str) -> bool:
