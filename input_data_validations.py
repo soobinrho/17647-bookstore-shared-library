@@ -29,7 +29,12 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
         if len(part) < 1:
             return False
 
-    JWT_payload = jwt.decode(input_JWT, options={"verify_signature": False})
+    try:
+        JWT_payload = jwt.decode(input_JWT, options={"verify_signature": False})
+    except Exception as e:
+        print("[INFO] jwt decode failed. Invalid jwt likely.")
+        print(e)
+        return False
 
     # We don't need the header for this assignment, but adding this
     # for my future reference:
@@ -64,6 +69,7 @@ def check_is_valid_unix_epoch(input_time) -> bool:
         _ = datetime.datetime.fromtimestamp(int(float(input_time)))
         return True
     except Exception as e:
+        print("[INFO] Invalid unix epoch detected.")
         print(e)
         return False
 
