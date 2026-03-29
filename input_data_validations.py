@@ -10,18 +10,28 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     # signature's purpose is to verify that the header and the payload
     # originate from where it claims to be. The header and payload are
     # still base64 decodable without any key.
+
+    # DEBUG
+    print(input_JWT)
+    # DEBUG
     input_JWT = input_JWT.strip()
     if "Bearer" not in input_JWT:
+        print("Bearer not in")
+        print(input_JWT)
         return False
 
     input_JWT = input_JWT.split(" ")
     if len(input_JWT) != 2:
+        print("split not 2")
+        print(input_JWT)
         return False
 
     # Example:
     # HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
     input_JWT = input_JWT[1]
-    if input_JWT.count(".") != 3:
+    if input_JWT.count(".") != 2:
+        print(". not 2")
+        print(input_JWT)
         return False
 
     list_JWT_three_parts = input_JWT.split(".")
