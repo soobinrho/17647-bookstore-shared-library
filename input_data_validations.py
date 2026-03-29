@@ -47,7 +47,7 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     if not check_is_valid_unix_epoch(JWT_payload_exp):
         return False
     else:
-        input_time = datetime.datetime.fromtimestamp(JWT_payload_exp)
+        input_time = datetime.datetime.fromtimestamp(int(float(JWT_payload_exp)))
         now_time = datetime.datetime.now()
         if input_time <= now_time:
             return False
@@ -59,11 +59,12 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     return True
 
 
-def check_is_valid_unix_epoch(input_time: str) -> bool:
+def check_is_valid_unix_epoch(input_time) -> bool:
     try:
-        datetime.datetime.fromtimestamp(input_time)
+        _ = datetime.datetime.fromtimestamp(int(float(input_time)))
         return True
-    except Exception:
+    except Exception as e:
+        print(e)
         return False
 
 
