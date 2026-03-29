@@ -74,7 +74,7 @@ def check_is_valid_unix_epoch(input_time) -> bool:
         _ = datetime.datetime.fromtimestamp(int(float(input_time)))
         return True
     except Exception as e:
-        print("[INFO] Invalid unix epoch detected.")
+        print(f"[INFO] Invalid unix epoch detected: {input_time}")
         print(e)
         return False
 
