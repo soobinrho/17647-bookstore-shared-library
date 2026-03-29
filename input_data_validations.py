@@ -5,11 +5,22 @@ import datetime
 
 def check_is_valid_JWT(input_JWT: str) -> bool:
     # Structure of JWT:
-    # HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
+    # Bearer HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
     # In this assignment, signature can be any value. Note that
     # signature's purpose is to verify that the header and the payload
     # originate from where it claims to be. The header and payload are
     # still base64 decodable without any key.
+    input_JWT = input_JWT.strip()
+    if "Bearer" not in input_JWT:
+        return False
+
+    input_JWT = input_JWT.split(" ")
+    if len(input_JWT) != 2:
+        return False
+
+    # Example:
+    # HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
+    input_JWT = input_JWT[1]
     if input_JWT.count(".") != 3:
         return False
 
