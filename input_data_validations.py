@@ -12,11 +12,6 @@ def check_is_valid_JWT(input_JWT: str) -> bool:
     # originate from where it claims to be. The header and payload are
     # still base64 decodable without any key.
     input_JWT = input_JWT.strip()
-    # DEBUG
-    print("[DEBUG]")
-    print(f"[DEBUG] {input_JWT}")
-    print("[DEBUG]")
-    # DEBUG
     if not input_JWT.lower().startswith("bearer"):
         return False
 
