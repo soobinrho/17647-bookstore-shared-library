@@ -3,26 +3,6 @@ import jwt
 import datetime
 
 
-def check_is_valid_authorization_header(input_auth) -> bool:
-    if input_auth is None:
-        return False
-
-    input_auth = str(input_auth)
-    if "Authorization" not in input_auth:
-        return False
-
-    # Good example: `Authorization <SNIP>.<SNIP>.<SNIP>`
-    # Bad example: `Authorization `
-    if len(input_auth.strip().split(" ")) < 2:
-        return False
-
-    str_JWT = input_auth.strip().split(" ")[1]
-    if not check_is_valid_JWT(str_JWT):
-        return False
-
-    return True
-
-
 def check_is_valid_JWT(input_JWT: str) -> bool:
     # Structure of JWT:
     # HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
