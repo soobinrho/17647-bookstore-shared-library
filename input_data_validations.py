@@ -1,7 +1,7 @@
 import re
-import jwt
-import datetime
 import time
+
+import jwt
 
 
 def check_is_valid_JWT(input_JWT: str) -> bool:

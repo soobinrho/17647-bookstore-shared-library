@@ -1,6 +1,6 @@
-from sqlmodel import SQLModel, Field, Column
-from sqlalchemy.dialects.mysql import LONGTEXT
 from pydantic import BaseModel
+from sqlalchemy.dialects.mysql import LONGTEXT
+from sqlmodel import Column, Field, SQLModel
 
 
 # I know str doesn't make sense for some of these columns, but the instruction
