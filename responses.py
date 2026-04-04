@@ -36,7 +36,7 @@ RESPONSE_INVALID_STATE = JSONResponse(
 # ===
 # BFF
 # ===
-RESPONSE_UNAUTHORIZED = JSONResponse(
+RESPONSE_UNAUTHENTICATED = JSONResponse(
     status_code=status.HTTP_401_UNAUTHORIZED,
     content={"message": "Please provide a valid JWT."},
 )

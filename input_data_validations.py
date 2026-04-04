@@ -4,6 +4,22 @@ import time
 import jwt
 
 
+def check_is_authenticated_request(
+    req_path: str | None, header_auth: str | None
+) -> bool:
+    if req_path is not None and (
+        req_path.startswith("/docs")
+        or req_path.startswith("/openapi.json")
+        or req_path.startswith("/status")
+    ):
+        return True
+
+    if header_auth is not None and check_is_valid_JWT(header_auth):
+        return True
+
+    return False
+
+
 def check_is_valid_JWT(input_JWT: str) -> bool:
     # Structure of JWT:
     # Bearer HEADER_BASE64URL_ENCODED.PAYLOAD_BASE64URL_ENCODED.SIGNATURE
