@@ -28,6 +28,11 @@ class Customers(SQLModel, table=True):
     zipcode: str
 
 
+class Misc(SQLModel, table=True):
+    misc_key: str = Field(primary_key=True)
+    misc_value: str
+
+
 # These are for HTTP request bodies.
 class BookRequestBody(BaseModel):
     ISBN: str | int | float | bool
