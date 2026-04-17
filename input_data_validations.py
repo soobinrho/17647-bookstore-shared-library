@@ -4,6 +4,17 @@ import time
 import jwt
 
 
+def sanitize_env_var(env_var: str) -> str:
+    # In Kubernetes, something like DB_URL='...' includes the quote itself.
+    # Thus, this sanitization is necessary.
+    sanitized = str(env_var).strip()
+    if sanitized.startswith('"') or sanitized.startswith("'"):
+        sanitized = sanitized[1:]
+    if sanitized.endswith('"') or sanitized.endswith("'"):
+        sanitized = sanitized[:-1]
+    return sanitized
+
+
 def check_is_authenticated_request(
     req_path: str | None, header_auth: str | None
 ) -> bool:
