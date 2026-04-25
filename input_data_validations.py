@@ -20,6 +20,7 @@ def check_is_authenticated_request(
 ) -> bool:
     if req_path is not None and (
         req_path.startswith("/docs")
+        or req_path == "/"
         or req_path.startswith("/openapi.json")
         or req_path.startswith("/status")
     ):
