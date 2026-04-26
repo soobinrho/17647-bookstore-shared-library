@@ -136,3 +136,101 @@ def get_env_vars_for_api_service_books_queries():
         DB_COLLECTION,
         API_RELATED_BOOKS_URL,
     )
+
+
+def get_env_vars_for_cronjob_sync_data():
+    IS_DEV = os.environ.get("IS_DEV", None)
+    IS_DEV = True if IS_DEV is not None else False
+    print(f"[INFO] IS_DEV = {IS_DEV}")
+
+    DB_BOOKS_COMMANDS_USER = os.environ.get("DB_BOOKS_COMMANDS_USER", None)
+    DB_BOOKS_COMMANDS_PASS = os.environ.get("DB_BOOKS_COMMANDS_PASS", None)
+    DB_BOOKS_COMMANDS_URL = os.environ.get("DB_BOOKS_COMMANDS_URL", None)
+    DB_BOOKS_COMMANDS_PORT = os.environ.get("DB_BOOKS_COMMANDS_PORT", None)
+    DB_BOOKS_COMMANDS_DATABASE = os.environ.get("DB_BOOKS_COMMANDS_DATABASE", None)
+    should_raise_exception = False
+    if DB_BOOKS_COMMANDS_USER is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_USER = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_PASS is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_PASS = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_URL is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_URL = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_PORT is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_PORT = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_DATABASE is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_DATABASE = None")
+        should_raise_exception = True
+    if should_raise_exception:
+        raise Exception(
+            "[ERROR] Required credentials were not found in the environment variables"
+        )
+
+    # K8s includes something like DB_BOOKS_COMMANDS_USER='...' to include the quotes themselves too.
+    # Thus, sanitize it so that the env vars do not start with or end with quotes.
+    DB_BOOKS_COMMANDS_USER = sanitize_env_var(DB_BOOKS_COMMANDS_USER)
+    DB_BOOKS_COMMANDS_PASS = sanitize_env_var(DB_BOOKS_COMMANDS_PASS)
+    DB_BOOKS_COMMANDS_URL = sanitize_env_var(DB_BOOKS_COMMANDS_URL)
+    DB_BOOKS_COMMANDS_PORT = int(float(sanitize_env_var(DB_BOOKS_COMMANDS_PORT)))
+    DB_BOOKS_COMMANDS_DATABASE = sanitize_env_var(DB_BOOKS_COMMANDS_DATABASE)
+
+    DB_BOOKS_QUERIES_USER = os.environ.get("DB_BOOKS_QUERIES_USER", None)
+    DB_BOOKS_QUERIES_PASS = os.environ.get("DB_BOOKS_QUERIES_PASS", None)
+    DB_BOOKS_QUERIES_URL = os.environ.get("DB_BOOKS_QUERIES_URL", None)
+    DB_BOOKS_QUERIES_PORT = os.environ.get("DB_BOOKS_QUERIES_PORT", None)
+    DB_BOOKS_QUERIES_DATABASE = os.environ.get("DB_BOOKS_QUERIES_DATABASE", None)
+    DB_BOOKS_QUERIES_COLLECTION = os.environ.get("DB_BOOKS_QUERIES_COLLECTION", None)
+    should_raise_exception = False
+    if DB_BOOKS_QUERIES_USER is None:
+        print("[ERROR] DB_BOOKS_QUERIES_USER = None")
+        should_raise_exception = True
+    if DB_BOOKS_QUERIES_PASS is None:
+        print("[ERROR] DB_BOOKS_QUERIES_PASS = None")
+        should_raise_exception = True
+    if DB_BOOKS_QUERIES_URL is None:
+        print("[ERROR] DB_BOOKS_QUERIES_URL = None")
+        should_raise_exception = True
+    # In prod, a MongoDB cluster is used instead of a local instance of MongoDB.
+    # MongoDB clusters don't accept port numbers.
+    if DB_BOOKS_QUERIES_PORT is None and IS_DEV:
+        print("[ERROR] DB_BOOKS_QUERIES_PORT = None")
+        should_raise_exception = True
+    if DB_BOOKS_QUERIES_DATABASE is None:
+        print("[ERROR] DB_BOOKS_QUERIES_DATABASE = None")
+        should_raise_exception = True
+    if DB_BOOKS_QUERIES_COLLECTION is None:
+        print("[ERROR] DB_BOOKS_QUERIES_COLLECTION = None")
+        should_raise_exception = True
+    if should_raise_exception:
+        raise Exception(
+            "[ERROR] Required credentials were not found in the environment variables"
+        )
+
+    # K8s includes something like DB_BOOKS_QUERIES_USER='...' to include the quotes themselves too.
+    # Thus, sanitize it so that the env vars do not start with or end with quotes.
+    DB_BOOKS_QUERIES_USER = sanitize_env_var(DB_BOOKS_QUERIES_USER)
+    DB_BOOKS_QUERIES_PASS = sanitize_env_var(DB_BOOKS_QUERIES_PASS)
+    DB_BOOKS_QUERIES_URL = sanitize_env_var(DB_BOOKS_QUERIES_URL)
+    DB_BOOKS_QUERIES_PORT = (
+        int(float(sanitize_env_var(DB_BOOKS_QUERIES_PORT))) if IS_DEV else None
+    )
+    DB_BOOKS_QUERIES_DATABASE = sanitize_env_var(DB_BOOKS_QUERIES_DATABASE)
+    DB_BOOKS_QUERIES_COLLECTION = sanitize_env_var(DB_BOOKS_QUERIES_COLLECTION)
+
+    return (
+        IS_DEV,
+        DB_BOOKS_COMMANDS_USER,
+        DB_BOOKS_COMMANDS_PASS,
+        DB_BOOKS_COMMANDS_URL,
+        DB_BOOKS_COMMANDS_PORT,
+        DB_BOOKS_COMMANDS_DATABASE,
+        DB_BOOKS_QUERIES_USER,
+        DB_BOOKS_QUERIES_PASS,
+        DB_BOOKS_QUERIES_URL,
+        DB_BOOKS_QUERIES_PORT,
+        DB_BOOKS_QUERIES_DATABASE,
+        DB_BOOKS_QUERIES_COLLECTION,
+    )
