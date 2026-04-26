@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from sqlalchemy.dialects.mysql import LONGTEXT
+from sqlalchemy.dialects.mysql import BIGINT, LONGTEXT
 from sqlmodel import Column, Field, SQLModel
 
 
@@ -14,7 +14,9 @@ class Books(SQLModel, table=True):
     price: str
     quantity: str
     summary: str | None = Field(default=None, sa_column=Column(LONGTEXT))
-    last_updated_datetime_unix_epoch: int
+    last_updated_datetime_unix_epoch: int = Field(
+        nullable=False, sa_column=Column(BIGINT)
+    )
 
 
 class Customers(SQLModel, table=True):
