@@ -14,6 +14,7 @@ class Books(SQLModel, table=True):
     price: str
     quantity: str
     summary: str | None = Field(default=None, sa_column=Column(LONGTEXT))
+    last_updated_datetime_unix_epoch: int
 
 
 class Customers(SQLModel, table=True):
