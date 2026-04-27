@@ -245,3 +245,50 @@ def get_env_vars_for_cronjob_sync_data():
         "DB_BOOKS_QUERIES_COLLECTION": DB_BOOKS_QUERIES_COLLECTION,
     }
     return CONFIGS
+
+
+def get_env_vars_for_circuit_breaker():
+    DB_BOOKS_COMMANDS_URL = os.environ.get("DB_BOOKS_COMMANDS_URL", None)
+    DB_BOOKS_COMMANDS_PORT = os.environ.get("DB_BOOKS_COMMANDS_PORT", None)
+    DB_BOOKS_COMMANDS_USER = os.environ.get("DB_BOOKS_COMMANDS_USER", None)
+    DB_BOOKS_COMMANDS_PASS = os.environ.get("DB_BOOKS_COMMANDS_PASS", None)
+    DB_BOOKS_COMMANDS_DATABASE = os.environ.get("DB_BOOKS_COMMANDS_DATABASE", None)
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", None)
+    should_raise_exception = False
+    if DB_BOOKS_COMMANDS_URL is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_URL = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_PORT is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_PORT = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_USER is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_USER = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_PASS is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_PASS = None")
+        should_raise_exception = True
+    if DB_BOOKS_COMMANDS_DATABASE is None:
+        print("[ERROR] DB_BOOKS_COMMANDS_DATABASE = None")
+        should_raise_exception = True
+    if should_raise_exception:
+        raise Exception(
+            "[ERROR] Required credentials were not found in the environment variables"
+        )
+
+    # K8s includes something like DB_BOOKS_COMMANDS_USER='...' to include the quotes themselves too.
+    # Thus, sanitize it so that the env vars do not start with or end with quotes.
+    DB_BOOKS_COMMANDS_URL = sanitize_env_var(DB_BOOKS_COMMANDS_URL)
+    DB_BOOKS_COMMANDS_PORT = int(float(sanitize_env_var(DB_BOOKS_COMMANDS_PORT)))
+    DB_BOOKS_COMMANDS_USER = sanitize_env_var(DB_BOOKS_COMMANDS_USER)
+    DB_BOOKS_COMMANDS_PASS = sanitize_env_var(DB_BOOKS_COMMANDS_PASS)
+    DB_BOOKS_COMMANDS_DATABASE = sanitize_env_var(DB_BOOKS_COMMANDS_DATABASE)
+    GEMINI_API_KEY = sanitize_env_var(GEMINI_API_KEY)
+
+    CONFIGS = {
+        "DB_BOOKS_COMMANDS_URL": DB_BOOKS_COMMANDS_URL,
+        "DB_BOOKS_COMMANDS_PORT": DB_BOOKS_COMMANDS_PORT,
+        "DB_BOOKS_COMMANDS_USER": DB_BOOKS_COMMANDS_USER,
+        "DB_BOOKS_COMMANDS_PASS": DB_BOOKS_COMMANDS_PASS,
+        "DB_BOOKS_COMMANDS_DATABASE": DB_BOOKS_COMMANDS_DATABASE,
+    }
+    return CONFIGS
