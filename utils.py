@@ -230,6 +230,17 @@ def get_env_vars_for_cronjob_sync_data():
     DB_BOOKS_QUERIES_DATABASE = sanitize_env_var(DB_BOOKS_QUERIES_DATABASE)
     DB_BOOKS_QUERIES_COLLECTION = sanitize_env_var(DB_BOOKS_QUERIES_COLLECTION)
 
+    SYNC_DATA_PERIOD_SECONDS = os.environ.get("SYNC_DATA_PERIOD_SECONDS", None)
+    should_raise_exception = False
+    if SYNC_DATA_PERIOD_SECONDS is None:
+        print("[ERROR] SYNC_DATA_PERIOD_SECONDS = None")
+        should_raise_exception = True
+    if should_raise_exception:
+        raise Exception(
+            "[ERROR] Required credentials were not found in the environment variables"
+        )
+    SYNC_DATA_PERIOD_SECONDS = sanitize_env_var(SYNC_DATA_PERIOD_SECONDS)
+
     CONFIGS = {
         "IS_DEV": IS_DEV,
         "DB_BOOKS_COMMANDS_URL": DB_BOOKS_COMMANDS_URL,
@@ -243,6 +254,7 @@ def get_env_vars_for_cronjob_sync_data():
         "DB_BOOKS_QUERIES_PASS": DB_BOOKS_QUERIES_PASS,
         "DB_BOOKS_QUERIES_DATABASE": DB_BOOKS_QUERIES_DATABASE,
         "DB_BOOKS_QUERIES_COLLECTION": DB_BOOKS_QUERIES_COLLECTION,
+        "SYNC_DATA_PERIOD_SECONDS": SYNC_DATA_PERIOD_SECONDS,
     }
     return CONFIGS
 
