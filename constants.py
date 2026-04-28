@@ -1,6 +1,6 @@
 COLNAME_ISBN = "ISBN"
 COLNAME_TITLE = "title"
-COLNAME_AUTHOR = "author"
+COLNAME_AUTHOR = "Author"
 COLNAME_DESCRIPTION = "description"
 COLNAME_GENRE = "genre"
 COLNAME_PRICE = "price"

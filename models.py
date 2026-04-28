@@ -8,7 +8,7 @@ from sqlmodel import Column, Field, SQLModel
 class Books(SQLModel, table=True):
     ISBN: str = Field(primary_key=True)
     title: str
-    author: str
+    Author: str
     description: str
     genre: str
     price: str
